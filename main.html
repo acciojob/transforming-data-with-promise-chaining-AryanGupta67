@@ -1,15 +1,58 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Promise Chain Math</title>
+</head>
+<body>
 
-<html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+  <h2>Enter a number:</h2>
+  <input type="number" id="ip" />
+  <button id="btn">Start</button>
 
-  <body>
-    <!-- do not change this code -->
-    <input type="number" id="ip" />
-    <button id="btn">Start</button>
-    <div id="output"></div>
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+  <div id="output"></div>
+
+  <script>
+    // Utility to delay and return a promise
+    function delayedPromise(result, delay) {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(result), delay);
+      });
+    }
+
+    document.getElementById("btn").addEventListener("click", function () {
+      const inputVal = parseFloat(document.getElementById("ip").value);
+      const outputDiv = document.getElementById("output");
+
+      if (isNaN(inputVal)) {
+        outputDiv.textContent = "Please enter a valid number";
+        return;
+      }
+
+      // Start promise chain
+      delayedPromise(inputVal, 2000)
+        .then((num) => {
+          outputDiv.textContent = `Result: ${num}`;
+          return delayedPromise(num * 2, 2000);
+        })
+        .then((num) => {
+          outputDiv.textContent = `Result: ${num}`;
+          return delayedPromise(num - 3, 1000);
+        })
+        .then((num) => {
+          outputDiv.textContent = `Result: ${num}`;
+          return delayedPromise(num / 2, 1000);
+        })
+        .then((num) => {
+          outputDiv.textContent = `Result: ${num}`;
+          return delayedPromise(num + 10, 1000);
+        })
+        .then((finalNum) => {
+          outputDiv.textContent = `Final Result: ${finalNum}`;
+        });
+    });
+  </script>
+
+</body>
 </html>
+
